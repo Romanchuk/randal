@@ -13,8 +13,6 @@
 		refreshTokenInProgress = false,
         defaults = {
         	dataType: 'json',
-        	//contentType: 'application/json',
-        	contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         	xhrFields: {
         		withCredentials: true
         	},
