@@ -194,11 +194,11 @@
 	};
 
 	function serializeToQueryString(obj, prefix) {
-		if (!obj) return '';
 		var str = [];
 		for(var p in obj) {
 			if (obj.hasOwnProperty(p)) {
 			var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
+			if (v === undefined || v === null) continue; //ignore undefined and null values
 			str.push(typeof v == "object" ?
 				serializeToQueryString(v, k) :
 				encodeURIComponent(k) + "=" + encodeURIComponent(v));
