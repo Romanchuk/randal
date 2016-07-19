@@ -193,8 +193,8 @@
 	    }
 	};
 
-
 	function serializeToQueryString(obj, prefix) {
+		if (!obj) return '';
 		var str = [];
 		for(var p in obj) {
 			if (obj.hasOwnProperty(p)) {
