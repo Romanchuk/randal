@@ -71,15 +71,16 @@
 				settings.data.forceToken = new Date().getTime();
 			}
 
-			if (typeof (settings.data) === 'object' && getType(settings.resourceId) !== 'GET') {
-				settings.data = JSON.stringify(settings.data);
+			if (typeof (settings.data) === 'object') {
+				if (getType(settings.resourceId) !== 'GET') {
+					settings.data = JSON.stringify(settings.data);
+				} 
+				else //GET
+				{
+					settings.data = serializeToQueryString(settings.data);
+				}
 			}
-
-			//prepare array fields for GET
-			if (typeof (settings.data) === 'object' && getType(settings.resourceId) === 'GET') {
-				settings.data = serializeToQueryString(settings.data);
-			}
-
+			
 			if (loop === 0) {
 			    eventable.trigger('before', promise);
 
