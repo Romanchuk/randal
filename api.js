@@ -172,6 +172,8 @@
 			error({ message: 'aborted', originalMessage: ampXHR.responseText, status: -1 }, -1);
 		} else if (ampXHR.status === 200 && status === 'parsererror') { //void response
 			success();
+		} else if (ampXHR.status === 204 && status === 'nocontent') {
+			success();
 		}
 		else {
 		    if (ampXHR.status === 503) { //service unavaliable error, server returns html response by default
