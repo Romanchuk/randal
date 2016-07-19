@@ -77,10 +77,7 @@
 
 			//prepare array fields for GET
 			if (typeof (settings.data) === 'object' && getType(settings.resourceId) === 'GET') {
-				for (var k in settings.data) {
-					if (settings.data[k] instanceof Array)
-						settings.data[k] = JSON.stringify(settings.data[k]);
-				}
+				settings.data = serializeToQueryString(settings.data);
 			}
 
 			if (loop === 0) {
@@ -194,6 +191,20 @@
 	        error(mes, ampXHR.status);
 	    }
 	};
+
+
+	function serializeToQueryString(obj, prefix) {
+		var str = [];
+		for(var p in obj) {
+			if (obj.hasOwnProperty(p)) {
+			var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
+			str.push(typeof v == "object" ?
+				serializeToQueryString(v, k) :
+				encodeURIComponent(k) + "=" + encodeURIComponent(v));
+			}
+		}
+		return str.join("&");
+	}
 
 	function cancelRequests(data) {
 		refreshTokenInProgress = false;
