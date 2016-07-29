@@ -104,7 +104,8 @@
 				    deferred.resolve(response);
 				    eventable.trigger('succeeded', response);
 				},
-				error: function (response) {
+				error: function (response, status) {
+					response.status = response.status || status;
 				    deferred.reject(response);
 				    eventable.trigger('failed', response);
 				    eventable.trigger('failed:' + response.status, response);
