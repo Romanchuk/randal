@@ -2,8 +2,10 @@
 	var
 		Q = require('q'),
 		config = require('randal/config'),
-		logoutUrl = config.get('urls.logout'),
-		loginUrl = config.get('urls.login');
+		adfsConfig = config.get('adfs'),
+		logoutUrl = adfsConfig.logoutUrl,
+		loginUrl = adfsConfig.loginUrl,
+		refreshTokenUrl =  adfsConfig.refreshTokenUrl;
 
 	return {
 		login: login,
@@ -36,7 +38,7 @@
 	}
 
 	function refreshToken() {
-		return callAdfs(loginUrl);
+		return callAdfs(refreshTokenUrl);
 	}
 
 	function callAdfs(url) {
