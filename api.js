@@ -79,7 +79,8 @@
 				{
 					settings.data = serializeToQueryString(settings.data);
 				}
-			}
+			} else if (settings.data !== undefined)
+				settings.data += '';
 			
 			if (loop === 0) {
 			    eventable.trigger('before', promise);
