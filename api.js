@@ -79,7 +79,7 @@
 				{
 					settings.data = serializeToQueryString(settings.data);
 				}
-			} else if (settings.data !== undefined)
+			} else if (settings.data !== undefined || settings.data !== null)
 				settings.data += '';
 			
 			if (loop === 0) {

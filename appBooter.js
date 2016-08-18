@@ -12,10 +12,12 @@
             if (!appBootstrapper)
                 return true;
 
-		    if (appBootstrapper.components)
-			    registerComponents(appBootstrapper.components);
-		    if (appBootstrapper.routes)
-		        router.map(appBootstrapper.routes);
+			var comps = appBootstrapper.getComponents();
+		    if (comps)
+			    registerComponents(comps);
+			var routes = appBootstrapper.getRoutes()
+		    if (routes)
+		        router.map(routes);
 
 		    return appBootstrapper.load ? bs.load() : true;
 	    };
