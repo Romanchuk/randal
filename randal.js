@@ -8,7 +8,26 @@
 		config = require('randal/config'),
 		appBooter = require('randal/appBooter'),
 		auth = require('randal/auth'),
-		applySettings = function () {
+		onNavigationCompleteBreadcrumbHandler = function (instance, instruction, targetRouter) {
+			var crumbs = [],
+				routes = targetRouter.routes,
+				activeCrumb = routes.filter(function (route) {
+					return route.breadcrumbOrder > -1 && route.isActive();
+				})[0];
+
+			if (activeCrumb) {
+				_.each(routes, function (route) {
+					if (!_.any(crumbs, function (crumb) { return crumb.moduleId === route.moduleId }) &&
+																((route.showInBreadcrumb !== undefined && route.showInBreadcrumb !== null && route.showInBreadcrumb !== false) || route.showInBreadcrumb === undefined) &&
+																route.breadcrumbOrder <= activeCrumb.breadcrumbOrder &&
+																activeCrumb.route.indexOf(route.route) !== -1) {
+						crumbs.push(route);
+					}
+				});
+			}
+			targetRouter.breadcrumbs(_.sortBy(crumbs, function (crumb) { return crumb.breadcrumbOrder }));
+		},
+		applySettings = function (options) {
 			viewLocator.convertModuleIdToViewId = function (moduleId) {
 				//account/account => account/views/account
 				//auth/signin/signin => auth/signin/views/signin
@@ -32,32 +51,17 @@
 					childRouter.updateDocumentTitle = router.updateDocumentTitle;
 					childRouter.updateTitle = router.updateTitle;
 					childRouter.createChildRouter = createChildRouter;
+					if (options.breadcrumbs) {
+						childRouter.breadcrumbs = ko.observable([]);
+						childRouter.on('router:navigation:complete', onNavigationCompleteBreadcrumbHandler);
+					}
 
 					return childRouter;
 				};
 
 			router.createChildRouter = createChildRouter;
 
-		},
-		onNavigationCompleteBreadcrumbHandler = function (instance, instruction, targetRouter) {
-			var crumbs = [],
-				routes = targetRouter.routes,
-				activeCrumb = routes.filter(function (route) {
-					return route.breadcrumbOrder > -1 && route.isActive();
-				})[0];
-
-			if (activeCrumb) {
-				_.each(routes, function (route) {
-					if (!_.any(crumbs, function (crumb) { return crumb.moduleId === route.moduleId }) &&
-																((route.showInBreadcrumb !== undefined && route.showInBreadcrumb !== null && route.showInBreadcrumb !== false) || route.showInBreadcrumb === undefined) &&
-																route.breadcrumbOrder <= activeCrumb.breadcrumbOrder &&
-																activeCrumb.route.indexOf(route.route) !== -1) {
-						crumbs.push(route);
-					}
-				});
-			}
-			targetRouter.breadcrumbs(_.sortBy(crumbs, function (crumb) { return crumb.breadcrumbOrder }));
-		},
+		},		
 		run = function (options) {
 			system.debug(config.get('debug'));
 			binder.throwOnErrors = true;
@@ -71,7 +75,7 @@
 				router.breadcrumbs = ko.observable([]);
 				router.on('router:navigation:complete', onNavigationCompleteBreadcrumbHandler);
 			}
-			applySettings();
+			applySettings(options);
 			router.install();
 			return appBooter.boot(router, options.bootstrapper);
 		};
