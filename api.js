@@ -101,6 +101,7 @@
 			var r = amplify.request({
 				resourceId: settings.resourceId,
 				data: settings.data,
+				headers: settings.headers,
 				success: function (response) {
 				    deferred.resolve(response);
 				    eventable.trigger('succeeded', response);
@@ -140,12 +141,13 @@
 				return Q.reject(error);
 			});
 		},
-        defer = function (resourceId, data, options, customEndpoint, abortProcessing) {
+        defer = function (resourceId, data, options, customEndpoint, abortProcessing, headers) {
             var forceRefresh;
             if (typeof (options) === "object") {
                 forceRefresh = options.forceRefresh;
                 customEndpoint = options.endpoint;
                 abortProcessing = options.abortProcessing;
+				headers = options.headers;
             } else
                 forceRefresh = options;
 
@@ -154,7 +156,8 @@
 		        data: data,
 		        forceRefresh: forceRefresh,
 		        customEndpoint: customEndpoint,
-		        abortProcessing: abortProcessing
+		        abortProcessing: abortProcessing,
+				headers: headers
 	        }, null, this);
         },
 
