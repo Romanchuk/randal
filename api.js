@@ -97,8 +97,7 @@
 			if (settings.abortProcessing) {
 			    requestAborter.abort('api', settings.resourceId);
 			}
-
-			var r = amplify.request({
+			var requestOpts = {
 				resourceId: settings.resourceId,
 				data: settings.data,
 				headers: settings.headers,
@@ -113,7 +112,15 @@
 				    eventable.trigger('failed', response);
 				    eventable.trigger('failed:' + response.status, response);
 				}
-			});
+			};
+			if (settings.headers) {
+				requestOpts.beforeSend = function(xhr) {
+					for (var h in settings.headers) {
+						xhr.setRequestHeader(h, settings.headers[h]);
+					}
+				}
+			}
+			var r = amplify.request(requestOpts);
 			promise.abort = r.abort;
 
 			if (settings.abortProcessing)
