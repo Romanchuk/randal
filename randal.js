@@ -53,7 +53,7 @@
 					childRouter.createChildRouter = createChildRouter;
 					if (options.breadcrumbs) {
 						childRouter.breadcrumbs = ko.observable([]);
-						childRouter.on('router:navigation:complete', onNavigationCompleteBreadcrumbHandler);
+						childRouter.on('router:navigation:composition-complete', onNavigationCompleteBreadcrumbHandler);
 					}
 
 					return childRouter;
@@ -73,7 +73,7 @@
 
 			if (options.breadcrumbs) {
 				router.breadcrumbs = ko.observable([]);
-				router.on('router:navigation:complete', onNavigationCompleteBreadcrumbHandler);
+				router.on('router:navigation:composition-complete', onNavigationCompleteBreadcrumbHandler);
 			}
 			applySettings(options);
 			router.install();
