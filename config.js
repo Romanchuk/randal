@@ -18,7 +18,7 @@
                     resultValue = resultValue[keyArr[i]];
             }
             if (resultValue instanceof Object) //clone object
-                return JSON.parse(JSON.stringify(obj));
+                return JSON.parse(JSON.stringify(resultValue));
             return resultValue;
         },
 
