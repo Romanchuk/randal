@@ -1,4 +1,6 @@
 ﻿define(function (require) {
+    require('JSON');
+
 	var _ = require('underscore'),
         fileConfig = require('config'),
         config = _.clone(fileConfig),
@@ -15,6 +17,8 @@
                 else 
                     resultValue = resultValue[keyArr[i]];
             }
+            if (resultValue instanceof Object) //clone object
+                return JSON.parse(JSON.stringify(obj));
             return resultValue;
         },
 
