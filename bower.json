@@ -1,6 +1,6 @@
 {
   "name": "randal",
-  "version": "0.0.1",
+  "version": "0.0.7",
   "main": "randal.js",
   "keywords": ["durandal", "client"],
   "ignore" : ["README.md", "docs", "test", "*.yml", "CNAME", "index.html", "favicon.ico", "CONTRIBUTING.md", ".*", "component.json", "package.json", "karma.*"]

@@ -58,7 +58,7 @@
 
         	settings.url = addEndpoint(resourceId, customEndpoint);
 
-        	return amplify.request.define(resourceId, 'ajax', _.extend(defaults, settings));
+        	return amplify.request.define(resourceId, 'ajax', _.extend({}, defaults, settings));
         },
 		innerDefer = function (settings, loop) {
 			loop = loop === null ? 0 : loop + 1;
